@@ -102,7 +102,7 @@ pib = col3.number_input("PIB (USD, milliards)", min_value=30, max_value=200, val
 
 if st.button("Prédire la consommation d'eau"):
     prediction = model.predict([[pop_totale, pop_urbaine, pib]])[0]+12000
-    st.success(f"Consommation d'eau prévue: {prediction :,.0f} (±4,500) millions m³/an")
+    st.success(f"Consommation d'eau prévue: {prediction :,.0f} (±1,137) millions m³/an")
     
     # Détail par secteur
     st.subheader("Répartition par secteur (estimation)")
