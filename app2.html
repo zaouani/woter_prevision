@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tableau de bord intelligent</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e8f5e9, #fffde7);
+      margin: 0;
+      padding: 1rem;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      padding: 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: #2e7d32;
+      margin-bottom: 0.5rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background: #f1f8e9;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      color: #33691e;
+    }
+
+    .stat-card h3 {
+      font-size: 1.1rem;
+      margin: 0.5rem 0;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .buttons button {
+      background: #66bb6a;
+      color: white;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .buttons button:hover {
+      background: #558b2f;
+    }
+
+    .card {
+      background-color: #f9fbe7;
+      border-left: 6px solid #aed581;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .card img {
+      width: 36px;
+      height: 36px;
+    }
+
+    .map {
+      margin-top: 1.5rem;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .map img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .weekly-stats {
+      background: #fffde7;
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+
+    .weekly-stats h3 {
+      margin-top: 0;
+      color: #f57f17;
+    }
+
+    .footer {
+      font-size: 0.85rem;
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #777;
+    }
+
+    .highlight {
+      background: #fff59d;
+      padding: 4px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🌾 Tableau de bord intelligent</h2>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>5</h3>
+        <div>Parcelles</div>
+      </div>
+      <div class="stat-card">
+        <h3 id="hum-moy">24%</h3>
+        <div>Humidité moy.</div>
+      </div>
+      <div class="stat-card">
+        <h3>2</h3>
+        <div>Alertes actives</div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button onclick="updateData()">🔄 Mettre à jour</button>
+      <button>📄 Télécharger rapport</button>
+      <button>➕ Nouvelle parcelle</button>
+    </div>
+
+    <div class="card">
+      <img src="https://img.icons8.com/clouds/100/sprinkler.png" alt="irrigation"/>
+      <div>
+        <strong>Parcelle Sud-Est</strong><br>
+        Irrigation : <span id="irrigation">23 avril</span><br>
+        Volume : <strong>11 mm</strong>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://img.icons8.com/color/48/wet.png" alt="humidité"/>
+      <div>
+        Taux humidité : <strong id="humidite">24%</strong><br>
+        Tendance : stable
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://img.icons8.com/color/48/error--v1.png" alt="alerte"/>
+      <div>
+        <strong style="color: red;">⚠️ Vents forts cette semaine</strong><br>
+        Prévoir l'irrigation tôt le matin
+      </div>
+    </div>
+
+    <div class="map">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Openstreetmap_logo.svg/800px-Openstreetmap_logo.svg.png" alt="carte simulée"/>
+      <div class="highlight">Zone critique détectée</div>
+    </div>
+
+    <div class="weekly-stats">
+      <h3>📊 Statistiques Hebdomadaires</h3>
+      - Max humidité : 35%<br>
+      - Min humidité : 18%<br>
+      - Moyenne : <span id="moyenne">24%</span><br>
+      - Alerte : 2 jours sur 7
+    </div>
+
+    <div class="footer">Données actualisées toutes les 6h - version bêta</div>
+  </div>
+
+  <script>
+    function updateData() {
+      let humidite = Math.floor(Math.random() * 15) + 20;
+      document.getElementById("humidite").textContent = humidite + "%";
+      document.getElementById("hum-moy").textContent = humidite + "%";
+      document.getElementById("moyenne").textContent = humidite + "%";
+      const jours = ["21 avril", "22 avril", "23 avril", "24 avril"];
+      const randJour = jours[Math.floor(Math.random() * jours.length)];
+      document.getElementById("irrigation").textContent = randJour;
+    }
+  </script>
+</body>
+</html>
